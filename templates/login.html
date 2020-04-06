@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<h1> WELCOME TO MY PAGE </h1>
+</head>
+<body>
+<p> Please enter details: </p>
+<script>
+function login() {
+  var x = document.createElement("FORM");
+  x.setAttribute("id", "myForm");
+  document.body.appendChild(x);
+  }
+function create_form() {
+  linebreak = document.createElement("br");
+  var field1 = document.createElement("INPUT");
+  var field2 = document.createElement("INPUT");
+  var button = document.createElement("BUTTON")
+  button.innerHTML = 'sendJSON';
+  field1.setAttribute("type", "text");
+  field2.setAttribute("type", "text");
+  field1.setAttribute("name","fname");
+  field2.setAttribute("name","lname");
+  field1.setAttribute("placeholder", "fname");
+  field2.setAttribute("placeholder", "lname");
+  button.setAttribute("onclick","sendJSON()");
+  document.getElementById("myForm").appendChild(field1);
+  document.getElementById("myForm").appendChild(linebreak)
+  document.getElementById("myForm").appendChild(field2);
+  document.getElementById("myForm").appendChild(button);
+}
+
+function sendJSON(){
+          // create json object of form elements
+          var obj = {};
+          var elements = document.querySelectorAll("input");
+          for( var i = 0; i < elements.length; ++i) {
+            var element = elements[i];
+            var name = element.name;
+            var value = element.value;
+            if( name ) {
+              obj[name] = value;
+            }
+          }
+          // Creating a XHR object
+          let xhr = new XMLHttpRequest();
+          let url = "/authenticate_user";
+            // open a connection
+          xhr.open("POST", url, true);
+
+            // Set the request header i.e. which type of content you are sending
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            // Create a state change callback
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Print received data from server
+                    result.innerHTML = this.responseText;
+                }
+            }
+            var data = JSON.stringify(obj);
+            xhr.send(data);
+          }
+window.onload = login()
+window.onload = create_form()
+</script>
+</body>
+</html>
